@@ -1,8 +1,11 @@
 import { StyleSheet, View, Image, FlatList, Text, ScrollView, Pressable, useWindowDimensions } from "react-native";
 import products from "../data/products";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { cartSlice } from "../store/CartSlice";
 
 const ProductDetailsScreen = () => {
+  const dispatch = useDispatch();
+
   const product = useSelector((state) => state.products.selectedProduct);
 
   const { width } = useWindowDimensions();
@@ -38,7 +41,9 @@ const ProductDetailsScreen = () => {
         </View>
       </ScrollView>
       {/* Add to cart button */}
-      <Pressable onPress={addToCard} style={styles.button}>
+      <Pressable onPress={() => {
+        dispatch(cartSlice.actions.addCartItem({ product }));
+      }} style={styles.button}>
         <Text style={styles.buttonText}>Add to cart</Text>
       </Pressable>
 
